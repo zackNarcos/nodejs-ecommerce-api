@@ -7,13 +7,20 @@ if (process.env.NODE_ENV !== "production") {
 }
 exports.createProduct = async (req, res, next) => {
 
+  let productImages = [];
+    if (req.files) {
+        req.files.forEach((file) => {
+            productImages.push(file.filename);
+        });
+    }
+
   try {
     const newProduct = {
       category: req.body.category,
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      productImage: req.file.filename,
+      productImages: productImages,
       quantity: req.body.quantity,
     };
 

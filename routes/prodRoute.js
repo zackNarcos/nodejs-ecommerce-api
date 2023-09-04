@@ -7,6 +7,9 @@ const ProdController = require("../controllers/prodController");
 const fs = require('fs');
 const uploadDir = './public/uploads/';
 
+if (!fs.existsSync('./public')) {
+  fs.mkdirSync('./public');
+}
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
@@ -19,6 +22,7 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}.${ext}`);
   },
 });
+
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png"  || file.mimetype === "image/jpg") {
@@ -36,7 +40,8 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-router.post("/", upload.single("productImage"), ProdController.createProduct);
+// router.post("/", upload.single("productImage"), ProdController.createProduct);
+router.post("/", upload.array("productImages"), ProdController.createProduct);
 
 router.get("/show", ProdController.getProducts);
 
