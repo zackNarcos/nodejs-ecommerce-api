@@ -1,19 +1,11 @@
 const mongoose = require("mongoose");
 
-const database = mongoose.connect(
-  process.env.DB_URL,
-  { useNewUrlParser: true, 
-    useUnifiedTopology: true, 
-    useFindAndModify: false,
-    useCreateIndex: true
-  },
-  (error) => {
-    if (!error) {
-      console.log("connexion à mongoDB réussie");
-    } else {
-      console.log("connexion à mongoDB échouée", error);
-    }
-  }
-);
+const uri = process.env.DB_URL;
+console.log(uri)
+const database = mongoose.connect(uri,
+    { useNewUrlParser: true,
+        useUnifiedTopology: true })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 module.exports = database;
